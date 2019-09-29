@@ -14,10 +14,13 @@ class IbmandiriSpider(scrapy.Spider):
     allowed_domains = ["ib.bankmandiri.co.id"]
     start_urls = ["https://ib.bankmandiri.co.id/retail/Login.do?action=form&lang=in_ID"]
 
-    def __init__(self, to_crawl="ballance", month=None, year=None, *args, **kwargs):
+    def __init__(self, to_crawl="ballance", month=None, year=None, userid=None, password=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.to_crawl = to_crawl
         self.last_ballance = 0
+        self.userid = userid
+        self.password = password
+
         if month:
             self.month = month
         else:
@@ -34,11 +37,9 @@ class IbmandiriSpider(scrapy.Spider):
         return spider
 
     def parse(self, response):
-        user_id = os.environ["IBMANDIRI_USERID"]
-        password = os.environ["IBMANDIRI_PASS"]
         return scrapy.FormRequest.from_response(
             response,
-            formdata={"userID": user_id, "password": password},
+            formdata={"userID": self.userid, "password": self.password},
             formname="LoginForm",
             callback=self.after_login,
         )

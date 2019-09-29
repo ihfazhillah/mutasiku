@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block main %}
+<div class="row wow fadeIn">
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Tanggal</th>
+              <th scope="col">Statement</th>
+              <th scope="col">Masuk</th>
+              <th scope="col">Keluar</th>
+              <th scope="col">Ballance</th>
+              <th scope="col">Bank Code</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for statement in object_list %}
+            <tr>
+              <th scope="row">{{ statement.tanggal|date:"d-m-Y" }}</th>
+              <td>{{ statement.keterangan }}</td>
+              <td>{{ statement.masuk }}</td>
+              <td>{{ statement.keluar }} </td>
+              <td>{{ statement.ballance }} </td>
+              <th scope="row">{{ statement.bank.name }}</th>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock main %}

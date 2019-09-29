@@ -18,6 +18,7 @@ services:
     env_file:
       - ./.envs/.local/.django
       - ./.envs/.local/.postgres
+      - ./.envs/.local/.banks
     ports:
       - "8000:8000"
     command: /start
@@ -74,3 +75,6 @@ services:
     ports:
       - "6800:6800"
     command: scrapyd
+    env_file:
+      - ./.envs/.local/.banks
+      - .envs/.local/.banks

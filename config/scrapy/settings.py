@@ -9,6 +9,16 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 import os
+import environ
+
+ROOT_DIR = (
+    environ.Path(__file__) - 3
+    # (mutasiku/config/scrapy/settings.py
+)
+APPS_DIR = ROOT_DIR.path("mutasiku")
+
+env = environ.Env()
+
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'config.settings.local'
 

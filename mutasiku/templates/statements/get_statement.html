@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block main %}
+<div id="getStatement" class="row wave fadeIn">
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+
+        <div class="form-group">
+          <label for="input" >Month</label>
+          <input type="text" v-model="month_year" id="input" class="form-control monthpicker" placeholder="MM/YYYY" style="">
+        </div>
+
+        <div class="form-group">
+          <label for="select">Bank</label>
+          <div>
+            <select v-model="bank" class="browser-default custom-select mb-4 initialized" id="select">
+              <option value="ibmandiri" disabled selected>Mandiri (OLD)</option>
+            </select>
+          </div>
+        </div>
+
+
+        <button v-on:click="getStatement" class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" >Get Statement</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/jquery.ui.monthpicker.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<script>
+  $(document).ready(() => {
+
+    var app = new Vue({
+      el: "#getStatement",
+      data: {
+        "bank": "ibmandiri",
+        "month_year": "09/2019",
+        "loading": false
+      },
+      methods: {
+        getStatement: function(){
+          // get send request to user
+          var url = "{% url 'statements:crawl' %}";
+          var data = {
+            bank_code: this.bank,
+            month_year: this.month_year
+          };
+          // pass loading true
+          this.loading = true;
+          $.post(url, data).
+            done(function(data){
+              console.log(data)
+            }).
+            catch(function(err){
+              console.log(err)
+            })
+          // set interval for get status
+          // once done, display completed
+          // redirect into statements page
+        }
+      },
+    })
+    $('input.monthpicker').monthpicker();
+
+  })
+</script>
+{% endblock %}

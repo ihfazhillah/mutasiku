@@ -10,6 +10,12 @@ class Bank(models.Model):
         return self.name
 
 
+class Credential(models.Model):
+    userid = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)
+    bank = models.ForeignKey(Bank, on_delete=models.CASCADE)
+
+
 class Statement(models.Model):
     bank = models.ForeignKey(Bank, on_delete=models.CASCADE)
     keterangan = models.TextField()

@@ -17,6 +17,7 @@ urlpatterns = [
     path("users/", include("mutasiku.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
+    path("statements/", include("mutasiku.statements.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
