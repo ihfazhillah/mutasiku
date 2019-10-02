@@ -71,10 +71,18 @@ services:
 
   scrapyd:
     <<: *django
-    image: mutasiku_local_scrapyd
+    image: mutasiku_local_scrapyd_new
     ports:
       - "6800:6800"
     command: scrapyd
+    environment:
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+      - django
+      - postgres
     env_file:
       - ./.envs/.local/.banks
       - .envs/.local/.banks
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
