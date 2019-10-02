@@ -83,7 +83,8 @@ class DjangoItemPipeline(object):
                 ballance=item["ballance"],
                 bank=bank,
                 keterangan=item["keterangan"],
-                tanggal=item["tanggal"]
+                tanggal=item["tanggal"],
+                hash_id=item["hash_id"]
             )
 
         return item
