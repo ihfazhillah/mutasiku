@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% load static crispy_forms_tags humanize %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/bootstrap-datepicker.min.css' %}">
+{% endblock %}
 
 
 {% block main %}
@@ -73,3 +76,14 @@
   </div>
 </div>
 {% endblock main %}
+
+{% block extra_js %}
+<script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
+<script>
+  $(document).ready(function(){
+    $("form").datepicker({
+      inputs: $("[name^='tanggal']")
+    })
+  })
+</script>
+{% endblock %}
