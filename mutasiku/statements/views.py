@@ -3,18 +3,21 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.views.generic import ListView
 from scrapyd_api import ScrapydAPI
+from django_filters.views import FilterView
 
 from .models import Credential, Statement
+from .filters import StatementFilterSet
 
 # Create your views here.
 
 scrapyd = ScrapydAPI("http://scrapyd:6800")
 
 
-class StatementListView(ListView):
+class StatementListView(FilterView):
     model = Statement
     ordering = "-tanggal"
     template_name = "statements/list.html"
+    filterset_class = StatementFilterSet
 
 
 statement_list_view = StatementListView.as_view()

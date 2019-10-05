@@ -24,3 +24,4 @@ coreapi==2.3.3  # https://github.com/core-api/python-client
 scrapy
 scrapyd
 python-scrapyd-api
+django-filter
