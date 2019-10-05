@@ -6,5 +6,7 @@ class StatementFilterSet(filters.FilterSet):
     class Meta:
         model = Statement
         fields = {
-            "keterangan": ["icontains"]
+            "keterangan": ["icontains"],
+            "tanggal": ["lte", "gte"],
+            "bank": ["exact"]
         }
