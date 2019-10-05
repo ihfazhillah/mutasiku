@@ -23,7 +23,9 @@
         </div>
 
 
-        <button v-on:click="getStatement" class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" >Get Statement</button>
+        <button v-on:click="getStatement" v-bind:disabled="loading" class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" >Get Statement <span v-show="loading"> <i class="fas fa-spinner fa-spin"></i>
+        </span>
+        </button>
 
       </div>
     </div>
@@ -43,32 +45,60 @@
       data: {
         "bank": "ibmandiri",
         "month_year": "09/2019",
-        "loading": false
+        "loading": false,
+        status: null,
+        interval: null,
+        taskId: null,
+      },
+      watch: {
+        loading: function(newState, prevState){
+          if(newState && !prevState){
+            // from false to true
+            this.checkCrawlStatus()
+          }
+        },
+        status: function(newState, prefState){
+          if (newState && newState.toLowerCase() === "finished"){
+            clearInterval(this.interval)
+            this.loading = false;
+          }
+        }
       },
       methods: {
+        onDateChange: function(e){
+          console.log(e.target.value)
+        },
+        checkCrawlStatus: function(){
+          this.interval = setInterval(() => {
+            if (this.taskId){
+              var url = "{% url 'statements:crawl' %}?task_id=" + this.taskId ;
+              $.get(url).done((data) => {
+                this.status = data.status
+              })
+            }
+          }, 500);
+        },
+
         getStatement: function(){
-          // get send request to user
           var url = "{% url 'statements:crawl' %}";
           var data = {
-            bank_code: this.bank,
-            month_year: this.month_year
-          };
-          // pass loading true
+            month_year: this.month_year,
+            bank_code: this.bank
+          }
           this.loading = true;
+          that = this;
           $.post(url, data).
-            done(function(data){
-              console.log(data)
+            done((data) => {
+              this.taskId = data.task_id
             }).
-            catch(function(err){
-              console.log(err)
+            fail((err) => {
+              this.loading = false;
+              clearInterval(this.interval)
             })
-          // set interval for get status
-          // once done, display completed
-          // redirect into statements page
         }
       },
     })
-    $('input.monthpicker').monthpicker();
+
 
   })
 </script>
