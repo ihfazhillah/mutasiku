@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.views.generic import ListView
+from django.db.models import Sum
 from scrapyd_api import ScrapydAPI
 from django_filters.views import FilterView
 
@@ -18,6 +19,15 @@ class StatementListView(FilterView):
     ordering = "-tanggal"
     template_name = "statements/list.html"
     filterset_class = StatementFilterSet
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["extra_data"] = self.object_list.aggregate(
+            total_masuk=Sum("masuk"),
+            total_keluar=Sum("keluar")
+        )
+        context["ballance"] = Statement.objects.order_by("-tanggal").first().ballance
+        return context
 
 
 statement_list_view = StatementListView.as_view()

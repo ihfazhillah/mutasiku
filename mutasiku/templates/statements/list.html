@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static crispy_forms_tags %}
+{% load static crispy_forms_tags humanize %}
 
 
 {% block main %}
@@ -9,7 +9,7 @@
       <div class="card-body">
         <form action="" method="get">
           {{ filter.form | crispy }}
-            <div class="form-group justify-content-center">
+            <div class="form-group d-flex justify-content-around">
               <button class="btn btn-default" type="button" onclick="window.location.href = '{% url 'statements:list' %}';" >Reset</button>
               <input class="btn btn-primary" type="submit" value="Search">
             </div>
@@ -18,8 +18,27 @@
     </div>
   </div>
   <div class="col-8">
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="card-deck">
+          <div class="card text-white bg-primary">
+            <div class="card-header">Saldo</div>
+            <div class="card-body">{{ ballance|intcomma }}</div>
+          </div>
+          <div class="card text-white bg-success">
+            <div class="card-header">Total Masuk</div>
+            <div class="card-body">{{ extra_data.total_masuk|intcomma }}</div>
+          </div>
+          <div class="card text-white bg-secondary">
+            <div class="card-header">Total Keluar</div>
+            <div class="card-body">{{ extra_data.total_keluar|intcomma }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="card">
       <div class="card-body">
+
         
 
         <div class="table-responsive">
@@ -30,7 +49,7 @@
                 <th scope="col">Statement</th>
                 <th scope="col">Masuk</th>
                 <th scope="col">Keluar</th>
-                <th scope="col">Ballance</th>
+                <!-- <th scope="col">Ballance</th> -->
                 <th scope="col">Bank Code</th>
               </tr>
             </thead>
@@ -39,9 +58,9 @@
               <tr>
                 <th scope="row">{{ statement.tanggal|date:"d-m-Y" }}</th>
                 <td>{{ statement.keterangan }}</td>
-                <td>{{ statement.masuk }}</td>
-                <td>{{ statement.keluar }} </td>
-                <td>{{ statement.ballance }} </td>
+                <td>{{ statement.masuk|intcomma }}</td>
+                <td>{{ statement.keluar|intcomma }} </td>
+                <!-- <td>{{ statement.ballance }} </td> -->
                 <th scope="row">{{ statement.bank.name }}</th>
               </tr>
               {% endfor %}
