@@ -76,6 +76,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "mutasiku.users.apps.UsersConfig",
     "mutasiku.statements",
+    "mutasiku.jenius_report",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
