@@ -25,3 +25,4 @@ scrapy
 scrapyd
 python-scrapyd-api
 django-filter
+camelot-py[cv]
